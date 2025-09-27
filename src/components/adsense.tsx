@@ -62,7 +62,7 @@ const AdSense: FC<AdSenseProps> = ({
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client="ca-pub-0000000000000000" // Placeholder
+        data-ad-client="ca-pub-6698556269439251"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive={fullWidthResponsive.toString()}
