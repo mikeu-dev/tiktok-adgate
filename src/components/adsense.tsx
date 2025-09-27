@@ -25,16 +25,37 @@ const AdSense: FC<AdSenseProps> = ({
 }) => {
   const pathname = usePathname();
   const adContainerRef = useRef<HTMLDivElement>(null);
+  const adPushedRef = useRef(false);
 
   useEffect(() => {
-    if (adContainerRef.current && adContainerRef.current.clientWidth > 0) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (err) {
-        console.error('AdSense error:', err);
+    const container = adContainerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(entries => {
+      const entry = entries[0];
+      if (entry && entry.contentRect.width > 0 && !adPushedRef.current) {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          adPushedRef.current = true;
+          observer.disconnect(); // Disconnect after pushing the ad
+        } catch (err) {
+          console.error('AdSense error:', err);
+        }
       }
-    }
+    });
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [pathname, adSlot]);
+
+  // Reset adPushedRef when the path or ad slot changes to allow new ads to load
+  useEffect(() => {
+    adPushedRef.current = false;
+  }, [pathname, adSlot]);
+
 
   return (
     <div ref={adContainerRef} className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed", className)} key={pathname + adSlot}>
