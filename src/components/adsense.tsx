@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, FC } from 'react';
+import { useEffect, FC, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
@@ -24,17 +24,20 @@ const AdSense: FC<AdSenseProps> = ({
   fullWidthResponsive = true 
 }) => {
   const pathname = usePathname();
+  const adContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.error('AdSense error:', err);
+    if (adContainerRef.current && adContainerRef.current.clientWidth > 0) {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (err) {
+        console.error('AdSense error:', err);
+      }
     }
-  }, [pathname]);
+  }, [pathname, adSlot]);
 
   return (
-    <div className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed", className)} key={pathname + adSlot}>
+    <div ref={adContainerRef} className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed", className)} key={pathname + adSlot}>
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
