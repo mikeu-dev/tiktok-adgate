@@ -21,10 +21,21 @@ const translations = {
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useLocalStorage<Language>('language', 'id');
+  const [storedLanguage, setStoredLanguage] = useLocalStorage<Language>('language', 'id');
+  const [language, setLanguage] = useState<Language>('id'); // Default to 'id' on server and initial client render
+
+  useEffect(() => {
+    setLanguage(storedLanguage);
+  }, [storedLanguage]);
+  
+  const handleSetLanguage = (lang: Language) => {
+    setStoredLanguage(lang);
+    setLanguage(lang);
+  };
 
   const t = useCallback((key: string, replacements?: { [key: string]: string | number }) => {
-    let translation = translations[language][key as keyof typeof idTranslations] || translations.id[key as keyof typeof idTranslations];
+    const translationSet = translations[language] || translations.id;
+    let translation = translationSet[key as keyof typeof idTranslations] || idTranslations[key as keyof typeof idTranslations] || key;
 
     if (replacements) {
         Object.keys(replacements).forEach(placeholder => {
@@ -42,7 +53,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
