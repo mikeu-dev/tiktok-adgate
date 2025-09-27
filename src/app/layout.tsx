@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 export const metadata: Metadata = {
   title: 'TikTok Downloader Free No Watermark - Watch Ad to Download',
   description: 'Download TikTok videos without watermark for free. Fast, easy, and unlimited downloads after watching a short ad.',
-  keywords: ['TikTok downloader', 'download TikTok', 'TikTok no watermark', 'free TikTok downloader'],
+  keywords: ['TikTok downloader', 'download TikTok', 'TikTok no watermark', 'free TikTok downloader', 'save TikTok video'],
 };
 
 export default function RootLayout({
