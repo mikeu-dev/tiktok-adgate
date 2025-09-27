@@ -9,19 +9,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { DownloadCloud, Loader2 } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 interface InputFormProps {
   onSubmit: (url: string) => void;
   isLoading: boolean;
 }
 
-const FormSchema = z.object({
-  url: z.string().url({ message: 'Please enter a valid URL.' }).regex(/tiktok\.com/, {
-    message: 'Please enter a valid TikTok URL.',
-  }),
-});
-
 export const InputForm: FC<InputFormProps> = ({ onSubmit, isLoading }) => {
+  const { t } = useLanguage();
+  
+  const FormSchema = z.object({
+    url: z.string().url({ message: t('form.error.url') }).regex(/tiktok\.com/, {
+      message: t('form.error.tiktokUrl'),
+    }),
+  });
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -59,7 +62,7 @@ export const InputForm: FC<InputFormProps> = ({ onSubmit, isLoading }) => {
                     ) : (
                       <DownloadCloud className="h-5 w-5" />
                     )}
-                    <span className="ml-2 hidden sm:inline">Fetch Video</span>
+                    <span className="ml-2 hidden sm:inline">{t('form.button')}</span>
                   </Button>
                 </div>
               </FormControl>

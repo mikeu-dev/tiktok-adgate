@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DownloadModal } from './download-modal';
 import type { VideoData } from '@/lib/types';
 import { Download, Music } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 interface ResultCardProps {
   videoData: VideoData;
@@ -16,6 +17,7 @@ interface ResultCardProps {
 export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [downloadInfo, setDownloadInfo] = useState<{ url: string; type: 'MP4' | 'MP3' } | null>(null);
+  const { t } = useLanguage();
   
   const videoUrl = videoData.hdplay || videoData.play;
 
@@ -35,7 +37,7 @@ export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
           <div className="relative aspect-video w-full overflow-hidden rounded-md">
             <Image
               src={videoData.cover}
-              alt={`Thumbnail for TikTok video: ${videoData.title}`}
+              alt={t('result.thumbnailAlt', { title: videoData.title })}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -50,7 +52,7 @@ export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
               onClick={() => handleDownloadClick(videoUrl, 'MP4')}
             >
               <Download className="mr-2 h-4 w-4" />
-              Download MP4
+              {t('result.downloadMp4')}
             </Button>
           )}
           {videoData.music && (
@@ -61,7 +63,7 @@ export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
               onClick={() => handleDownloadClick(videoData.music, 'MP3')}
             >
               <Music className="mr-2 h-4 w-4" />
-              Download MP3
+              {t('result.downloadMp3')}
             </Button>
           )}
         </CardFooter>

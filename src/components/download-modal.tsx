@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import AdSense from './adsense';
 import { Download, Hourglass } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 interface DownloadModalProps {
   open: boolean;
@@ -19,6 +20,7 @@ const AD_TIMER_SECONDS = 10;
 export const DownloadModal: FC<DownloadModalProps> = ({ open, onOpenChange, downloadInfo, onDownloadSuccess }) => {
   const [countdown, setCountdown] = useState(AD_TIMER_SECONDS);
   const [isDownloadReady, setIsDownloadReady] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (open) {
@@ -59,9 +61,9 @@ export const DownloadModal: FC<DownloadModalProps> = ({ open, onOpenChange, down
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Your Download is Almost Ready!</DialogTitle>
+          <DialogTitle>{t('modal.title')}</DialogTitle>
           <DialogDescription>
-            Please watch this ad to support our service. Your download will be available shortly.
+            {t('modal.description')}
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
@@ -72,16 +74,16 @@ export const DownloadModal: FC<DownloadModalProps> = ({ open, onOpenChange, down
                 <div className="w-full text-center">
                     <div className="flex items-center justify-center gap-2 mb-2 text-lg font-medium">
                         <Hourglass className="h-5 w-5 animate-spin" />
-                        <span>{countdown} seconds remaining...</span>
+                        <span>{t('modal.countdown', { count: countdown })}</span>
                     </div>
                     <Progress value={progressPercentage} className="w-full" />
                 </div>
             ) : (
-                <p className="text-center text-green-600 dark:text-green-400 font-semibold">You can now proceed to download!</p>
+                <p className="text-center text-green-600 dark:text-green-400 font-semibold">{t('modal.ready')}</p>
             )}
             <Button onClick={handleDownload} disabled={!isDownloadReady} className="w-full" size="lg">
                 <Download className="mr-2 h-4 w-4" />
-                Continue to Download {downloadInfo?.type}
+                {t('modal.button', { type: downloadInfo?.type })}
             </Button>
         </DialogFooter>
       </DialogContent>

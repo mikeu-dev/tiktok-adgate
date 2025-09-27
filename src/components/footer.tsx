@@ -1,6 +1,8 @@
+import { useLanguage } from '@/hooks/use-language';
 import AdSense from './adsense';
 
 export function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="border-t">
       <div className="container mx-auto px-4 py-8">
@@ -9,7 +11,7 @@ export function Footer() {
         </div>
         <div className="text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} TikTok AdGate. All rights reserved.</p>
-          <p>This service is not affiliated with TikTok.</p>
+          <p>{t('footer.disclaimer')}</p>
         </div>
       </div>
     </footer>

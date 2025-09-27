@@ -3,6 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from '@/lib/utils';
+import { LanguageProvider } from '@/components/providers/language-provider';
 
 const siteConfig = {
   name: 'TikTok AdGate Downloader',
@@ -17,7 +18,7 @@ const siteConfig = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} - Free & No Watermark`,
+    default: `${siteConfig.name} - Gratis & Tanpa Watermark`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -30,7 +31,9 @@ export const metadata: Metadata = {
     'TikTok video downloader',
     'TikTok MP4',
     'TikTok MP3',
+    'unduh TikTok',
     'downloader TikTok tanpa watermark',
+    'simpan video TikTok',
   ],
   authors: [
     {
@@ -42,7 +45,8 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'id_ID',
+    alternateLocale: 'en_US',
     url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
@@ -85,7 +89,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -94,17 +98,19 @@ export default function RootLayout({
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6698556269439251" crossOrigin="anonymous"></script>
       </head>
       <body className={cn("font-body antialiased min-h-screen flex flex-col")}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex-grow">
-            {children}
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

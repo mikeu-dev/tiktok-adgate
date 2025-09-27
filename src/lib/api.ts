@@ -1,6 +1,11 @@
 'use server';
 
 import type { TikTokAPIResponse, VideoData } from './types';
+import type { Language } from '@/hooks/use-language';
+import id from '@/locales/id.json';
+import en from '@/locales/en.json';
+
+const translations = { id, en };
 
 interface ActionResult {
   success: boolean;
@@ -8,10 +13,12 @@ interface ActionResult {
   error?: string;
 }
 
-export async function getVideoInfo(url: string): Promise<ActionResult> {
+export async function getVideoInfo(url: string, lang: Language = 'id'): Promise<ActionResult> {
+  const t = (key: keyof typeof id) => translations[lang][key] || translations['id'][key];
+  
   // Basic validation
   if (!url || !url.includes('tiktok.com')) {
-    return { success: false, error: 'Please provide a valid TikTok URL.' };
+    return { success: false, error: t("api.error.invalidUrl") };
   }
 
   try {
@@ -26,7 +33,7 @@ export async function getVideoInfo(url: string): Promise<ActionResult> {
     });
     
     if (!response.ok) {
-        return { success: false, error: `API request failed with status: ${response.status}` };
+        return { success: false, error: `${t("api.error.requestFailed")} ${response.status}` };
     }
 
     const result: TikTokAPIResponse = await response.json();
@@ -34,10 +41,10 @@ export async function getVideoInfo(url: string): Promise<ActionResult> {
     if (result.code === 0 && result.data) {
       return { success: true, data: result.data };
     } else {
-      return { success: false, error: result.msg || 'Failed to get video information. The video might be private or deleted.' };
+      return { success: false, error: result.msg || t("api.error.getInfoFailed") };
     }
   } catch (error) {
     console.error('API fetch error:', error);
-    return { success: false, error: 'An unexpected error occurred while contacting the API. Please try again later.' };
+    return { success: false, error: t("api.error.unexpected") };
   }
 }

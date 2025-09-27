@@ -14,24 +14,26 @@ import { Footer } from '@/components/footer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [downloadCount, setDownloadCount] = useLocalStorage('downloadCount', 0);
+  const { t, language } = useLanguage();
 
   const handleFetchVideo = async (url: string) => {
     setIsLoading(true);
     setError(null);
     setVideoData(null);
 
-    const result = await getVideoInfo(url);
+    const result = await getVideoInfo(url, language);
 
     if (result.success && result.data) {
       setVideoData(result.data);
     } else {
-      setError(result.error || 'An unknown error occurred.');
+      setError(result.error || t('error.unknown'));
     }
 
     setIsLoading(false);
@@ -48,10 +50,10 @@ export default function Home() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-5xl font-bold font-headline mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              TikTok AdGate Downloader
+              {t('home.title')}
             </h1>
             <p className="text-muted-foreground md:text-lg">
-              Paste a TikTok video link to download it without watermark. Watch a short ad to support us!
+              {t('home.subtitle')}
             </p>
           </div>
 
@@ -74,7 +76,7 @@ export default function Home() {
           {error && (
             <Alert variant="destructive">
               <Terminal className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t('error.title')}</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -83,7 +85,7 @@ export default function Home() {
           )}
 
           <div className="mt-12 text-center text-sm text-muted-foreground">
-            You have downloaded {downloadCount} videos. Thanks for your support!
+            {t('home.downloadCount', { count: downloadCount })}
           </div>
         </div>
       </main>
