@@ -24,41 +24,17 @@ const AdSense: FC<AdSenseProps> = ({
   fullWidthResponsive = true 
 }) => {
   const pathname = usePathname();
-  const adContainerRef = useRef<HTMLDivElement>(null);
-  const adPushedRef = useRef(false);
-
+  
   useEffect(() => {
-    const container = adContainerRef.current;
-    if (!container) return;
-
-    const observer = new ResizeObserver(entries => {
-      const entry = entries[0];
-      if (entry && entry.contentRect.width > 0 && !adPushedRef.current) {
-        try {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-          adPushedRef.current = true;
-          observer.disconnect(); // Disconnect after pushing the ad
-        } catch (err) {
-          console.error('AdSense error:', err);
-        }
-      }
-    });
-
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [pathname, adSlot]);
-
-  // Reset adPushedRef when the path or ad slot changes to allow new ads to load
-  useEffect(() => {
-    adPushedRef.current = false;
-  }, [pathname, adSlot]);
-
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (err) {
+      console.error('AdSense error:', err);
+    }
+  }, [adSlot, pathname]);
 
   return (
-    <div ref={adContainerRef} className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed", className)} key={pathname + adSlot}>
+    <div className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed", className)} key={pathname + adSlot}>
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
