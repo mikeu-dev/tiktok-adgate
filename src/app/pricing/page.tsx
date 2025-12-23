@@ -1,24 +1,26 @@
 'use client';
 
-import { Check } from 'lucide-react';
+import { Check, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { motion } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function PricingPage() {
     const plans = [
         {
             name: 'Free',
             price: '$0',
-            description: 'Perfect for casual users',
+            description: 'Essential for casual downloading',
             features: [
-                'Unlimited Downloads',
-                'No Watermark',
-                'Basic History (Last 5)',
-                'Standard Speed',
-                'Ad-Supported'
+                { name: 'Unlimited Downloads', tooltip: 'Download as many videos as you want' },
+                { name: 'No Watermark', tooltip: 'Get clean videos without TikTok logo' },
+                { name: 'Standard Speed', tooltip: 'Normal download speeds' },
+                { name: 'Ad-Supported', tooltip: 'Contains advertisements' },
+                { name: 'Basic History (Last 5)', tooltip: 'Recent history only' }
             ],
             buttonText: 'Get Started',
             buttonVariant: 'outline' as const,
@@ -28,14 +30,14 @@ export default function PricingPage() {
             name: 'Pro',
             price: '$9.99',
             period: '/month',
-            description: 'For power creators & agencies',
+            description: 'For creators who need the best',
             features: [
-                'Everything in Free',
-                'Unlimited History',
-                'Ad-Free Experience',
-                'Priority High-Speed Servers',
-                'Bulk Download (Coming Soon)',
-                'Analytics Dashboard'
+                { name: 'Everything in Free' },
+                { name: 'Unlimited History', tooltip: 'Access your entire download history forever' },
+                { name: 'Ad-Free Experience', tooltip: 'No interruptions, faster workflow' },
+                { name: 'Priority High-Speed', tooltip: 'Fastest servers reserved for pro users' },
+                { name: 'Bulk Download (Soon)', tooltip: 'Download all videos from a profile' },
+                { name: 'Analytics (Soon)', tooltip: 'Track your download stats' }
             ],
             buttonText: 'Upgrade to Pro',
             buttonVariant: 'default' as const,
@@ -44,61 +46,103 @@ export default function PricingPage() {
     ];
 
     return (
-        <>
+        <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/20">
             <Header />
-            <main className="container mx-auto px-4 py-16 md:py-24 min-h-screen">
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <motion.h1
+            <main className="flex-grow container mx-auto px-4 py-20">
+                <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                    <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-5xl font-bold font-headline mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent"
+                        transition={{ duration: 0.5 }}
                     >
-                        Simple, Transparent Pricing
-                    </motion.h1>
+                        <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                            Simple Pricing, <br />
+                            <span className="text-primary">Powerful Features</span>
+                        </h1>
+                    </motion.div>
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.1 }}
+                        transition={{ delay: 0.2, duration: 0.5 }}
                         className="text-xl text-muted-foreground"
                     >
-                        Choose the plan that fits your needs. No hidden fees.
+                        Start for free, upgrade when you need more power. No hidden fees, cancel anytime.
                     </motion.p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto items-center">
                     {plans.map((plan, index) => (
                         <motion.div
                             key={plan.name}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 + 0.2 }}
+                            transition={{ delay: index * 0.2 + 0.3 }}
+                            className={`h-full ${plan.popular ? 'md:-mt-8 md:mb-8' : ''}`}
                         >
-                            <Card className={`h-full flex flex-col relative overflow-hidden ${plan.popular ? 'border-primary shadow-lg scale-105 z-10' : 'border-border'}`}>
+                            <Card className={`h-full flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-xl ${plan.popular
+                                ? 'border-primary/50 shadow-2xl scale-100 md:scale-105 z-10 bg-card/60 backdrop-blur-sm'
+                                : 'border-border/50 hover:border-border bg-card/40 backdrop-blur-sm'
+                                }`}>
+
                                 {plan.popular && (
-                                    <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-bold rounded-bl-lg">
-                                        POPULAR
-                                    </div>
+                                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-primary" />
                                 )}
-                                <CardHeader>
-                                    <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                                    <div className="flex items-baseline gap-1 mt-2">
-                                        <span className="text-4xl font-extrabold">{plan.price}</span>
-                                        {plan.period && <span className="text-muted-foreground text-sm">{plan.period}</span>}
+
+                                <CardHeader className="pb-8">
+                                    {plan.popular && (
+                                        <div className="mb-2">
+                                            <Badge variant="default" className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+                                                MOST POPULAR
+                                            </Badge>
+                                        </div>
+                                    )}
+                                    <CardTitle className="text-3xl font-bold">{plan.name}</CardTitle>
+                                    <CardDescription className="text-base mt-2">{plan.description}</CardDescription>
+                                    <div className="mt-6 flex items-baseline gap-1">
+                                        <span className="text-5xl font-extrabold tracking-tight">{plan.price}</span>
+                                        {plan.period && <span className="text-muted-foreground font-medium">{plan.period}</span>}
                                     </div>
-                                    <CardDescription className="mt-2 text-base">{plan.description}</CardDescription>
                                 </CardHeader>
+
                                 <CardContent className="flex-grow">
-                                    <ul className="space-y-3">
-                                        {plan.features.map((feature, i) => (
-                                            <li key={i} className="flex items-center gap-2">
-                                                <Check className="h-5 w-5 text-green-500 shrink-0" />
-                                                <span className="text-sm">{feature}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <div className="space-y-4">
+                                        <div className="h-px w-full bg-border/50 mb-6" />
+                                        <TooltipProvider>
+                                            <ul className="space-y-4">
+                                                {plan.features.map((feature, i) => (
+                                                    <li key={i} className="flex items-start gap-3">
+                                                        <div className={`mt-1 rounded-full p-1 ${plan.popular ? 'bg-primary/10' : 'bg-muted'}`}>
+                                                            <Check className={`h-3 w-3 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} />
+                                                        </div>
+                                                        <div className="flex-1 flex items-center gap-2">
+                                                            <span className="text-sm font-medium opacity-90">{feature.name}</span>
+                                                            {feature.tooltip && (
+                                                                <Tooltip>
+                                                                    <TooltipTrigger>
+                                                                        <Info className="h-3 w-3 text-muted-foreground/50 hover:text-muted-foreground transition-colors" />
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>{feature.tooltip}</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            )}
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </TooltipProvider>
+                                    </div>
                                 </CardContent>
-                                <CardFooter>
-                                    <Button className="w-full h-11 text-base font-semibold" variant={plan.buttonVariant}>
+
+                                <CardFooter className="pt-8">
+                                    <Button
+                                        className={`w-full h-12 text-base font-semibold shadow-lg transition-all ${plan.popular
+                                            ? 'shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5'
+                                            : 'hover:-translate-y-0.5'
+                                            }`}
+                                        variant={plan.buttonVariant}
+                                        size="lg"
+                                    >
                                         {plan.buttonText}
                                     </Button>
                                 </CardFooter>
@@ -106,8 +150,16 @@ export default function PricingPage() {
                         </motion.div>
                     ))}
                 </div>
+
+                <div className="mt-20 text-center max-w-2xl mx-auto p-6 rounded-2xl bg-muted/30 border border-muted-foreground/10">
+                    <h3 className="font-semibold mb-2">Enterprise or Agency?</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                        We offer custom API access and bulk processing for high-volume needs.
+                    </p>
+                    <Button variant="link" className="text-primary">Contact Sales &rarr;</Button>
+                </div>
             </main>
             <Footer />
-        </>
+        </div>
     );
 }
