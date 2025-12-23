@@ -3,6 +3,7 @@
 import { useEffect, useState, FC, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 declare global {
   interface Window {
@@ -50,10 +51,14 @@ const AdSense: FC<AdSenseProps> = ({
   return (
     <div className={cn("relative flex justify-center items-center overflow-hidden min-h-[100px] rounded-lg", className)} key={pathname + adSlot}>
       {/* Internal Ad / Fallback */}
-      <a
+      <Link
         href="/pricing"
-        target="_blank"
         className="absolute inset-0 z-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-between px-6 hover:opacity-95 transition-opacity"
+        onClick={() => {
+          console.log("Internal Ad Clicked: Upgrade to Pro");
+          // Here you would add your analytics call, e.g.
+          // analytics.track('ad_click', { type: 'internal', slot: adSlot });
+        }}
       >
         <div className="flex flex-col text-white">
           <span className="font-bold text-lg">Upgrade to Pro</span>
@@ -62,7 +67,7 @@ const AdSense: FC<AdSenseProps> = ({
         <div className="bg-white text-purple-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm whitespace-nowrap">
           Get Started
         </div>
-      </a>
+      </Link>
 
       {/* External AdSense */}
       <ins
