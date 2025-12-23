@@ -15,6 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,49 +47,92 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="container mx-auto px-4 py-8 md:py-12 flex-grow">
+      <motion.main
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: { opacity: 0 },
+          show: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.1
+            }
+          }
+        }}
+        className="container mx-auto px-4 py-8 md:py-12 flex-grow"
+      >
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-5xl font-bold font-headline mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: -20 },
+              show: { opacity: 1, y: 0 }
+            }}
+            className="text-center mb-10"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold font-headline mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
               {t('home.title')}
             </h1>
-            <p className="text-muted-foreground md:text-lg">
+            <p className="text-muted-foreground md:text-xl font-light">
               {t('home.subtitle')}
             </p>
-          </div>
+          </motion.div>
 
           <InputForm onSubmit={handleFetchVideo} isLoading={isLoading} />
 
-          <div className="my-8">
-            <AdSense adSlot="1234567890" className="w-full h-24 flex items-center justify-center" />
-          </div>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0 },
+              show: { opacity: 1 }
+            }}
+            className="my-10"
+          >
+            <AdSense adSlot="1234567890" className="w-full h-28 flex items-center justify-center bg-muted/20 rounded-lg border border-dashed border-muted-foreground/20" />
+          </motion.div>
 
           {isLoading && (
-            <div className="space-y-4">
-              <Skeleton className="h-[200px] w-full rounded-lg" />
-              <Skeleton className="h-8 w-3/4" />
-              <div className="flex gap-4">
-                <Skeleton className="h-10 w-32" />
-                <Skeleton className="h-10 w-32" />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-6"
+            >
+              <Skeleton className="h-[250px] w-full rounded-xl" />
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-3/4 rounded-full" />
+                <Skeleton className="h-4 w-1/2 rounded-full" />
               </div>
-            </div>
+              <div className="flex gap-4 pt-2">
+                <Skeleton className="h-12 w-32 rounded-lg" />
+                <Skeleton className="h-12 w-32 rounded-lg" />
+              </div>
+            </motion.div>
           )}
           {error && (
-            <Alert variant="destructive">
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>{t('error.title')}</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <Alert variant="destructive" className="border-red-500/50 bg-red-500/10 text-red-600 dark:text-red-400">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle>{t('error.title')}</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            </motion.div>
           )}
           {videoData && (
             <ResultCard videoData={videoData} onDownload={incrementDownloadCount} />
           )}
 
-          <div className="mt-12 text-center text-sm text-muted-foreground">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0 },
+              show: { opacity: 1 }
+            }}
+            className="mt-16 text-center text-sm text-muted-foreground/60"
+          >
             {t('home.downloadCount', { count: downloadCount })}
-          </div>
+          </motion.div>
         </div>
-      </main>
+      </motion.main>
       <Footer />
     </>
   );

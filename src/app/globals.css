@@ -103,10 +103,20 @@
 
   body {
     @apply bg-background text-foreground;
+    background-image: radial-gradient(circle at top center, hsl(210 40% 98%), hsl(0 0% 100%));
+    background-attachment: fixed;
   }
 
   .dark body {
-    background-image: radial-gradient(circle at top center, hsl(210 20% 25%), hsl(210 10% 20%));
+    background-image: radial-gradient(circle at 50% 0%, hsl(222 47% 15%), hsl(222 47% 11%));
     background-attachment: fixed;
+  }
+
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+
+  .dark .glass {
+    @apply bg-black/20 border-white/10;
   }
 }

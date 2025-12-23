@@ -83,10 +83,11 @@ export const viewport: Viewport = {
 };
 
 
-import { Inter, Source_Code_Pro } from "next/font/google";
+import { Inter, Source_Code_Pro, Outfit } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const sourceCodePro = Source_Code_Pro({ subsets: ["latin"], variable: "--font-source-code-pro" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export default function RootLayout({
   children,
@@ -99,7 +100,7 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-6698556269439251" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6698556269439251" crossOrigin="anonymous"></script>
       </head>
-      <body className={cn("font-body antialiased min-h-screen flex flex-col", inter.variable, sourceCodePro.variable)}>
+      <body className={cn("font-body antialiased min-h-screen flex flex-col", inter.variable, sourceCodePro.variable, outfit.variable)}>
         <LanguageProvider>
           <ThemeProvider
             attribute="class"
