@@ -23,18 +23,32 @@ const AdSense: FC<AdSenseProps> = ({
   adFormat = 'auto',
   fullWidthResponsive = true
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
       console.error('AdSense error:', err);
     }
-  }, [adSlot, pathname]);
+  }, [adSlot, pathname, isMounted]);
+
+  if (!isMounted) {
+    return (
+      <div className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed h-24", className)}>
+        <span className="p-4">Loading Ad...</span>
+      </div>
+    );
+  }
 
   return (
-    <div className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed", className)} key={pathname + adSlot}>
+    <div className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed overflow-hidden", className)} key={pathname + adSlot}>
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
@@ -44,8 +58,6 @@ const AdSense: FC<AdSenseProps> = ({
         data-full-width-responsive={fullWidthResponsive.toString()}
         suppressHydrationWarning
       ></ins>
-      {/* In a real scenario, the Ad will be displayed here. This is a placeholder. */}
-      <span className="p-4">Advertisement Area</span>
     </div>
   );
 };
