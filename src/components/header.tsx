@@ -1,5 +1,5 @@
 import { ThemeToggle } from "./theme-toggle";
-import { Tv2, Languages, LogOut, User as UserIcon, History } from "lucide-react";
+import { Tv2, Languages, LogOut, User as UserIcon, History, Check } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "./ui/button";
 import { useAuth } from "@/components/auth-provider";
@@ -63,6 +63,18 @@ export function Header() {
                   <a href="/history" className="cursor-pointer">
                     <History className="mr-2 h-4 w-4" />
                     <span>History</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a href="/pricing" className="cursor-pointer">
+                    <Check className="mr-2 h-4 w-4" />
+                    <span>Pricing</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a href="/admin" className="cursor-pointer">
+                    <Tv2 className="mr-2 h-4 w-4" />
+                    <span>Admin</span>
                   </a>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
