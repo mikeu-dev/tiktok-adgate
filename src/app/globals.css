@@ -56,4 +56,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  .dark body {
+    background-image: radial-gradient(circle at top center, hsl(210 20% 25%), hsl(210 10% 20%));
+    background-attachment: fixed;
+  }
 }
