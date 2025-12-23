@@ -19,7 +19,8 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
     }
   }, [initialValue, key]);
 
-  const [storedValue, setStoredValue] = useState<T>(readValue);
+  // Initialize with initialValue to match SSR
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
 
   const setValue: SetValue<T> = useCallback(
     (value) => {
@@ -39,8 +40,9 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
     },
     [key, storedValue]
   );
-  
+
   useEffect(() => {
+    // Sync with localStorage on client mount
     setStoredValue(readValue());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
