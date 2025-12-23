@@ -25,7 +25,13 @@ export async function getVideoInfo(url: string, lang: Language = 'id'): Promise<
   }
 
   try {
-    const response = await fetch('https://www.tikwm.com/api/', {
+    const apiUrl = process.env.TIKTOK_API_URL;
+    if (!apiUrl) {
+      console.error("TIKTOK_API_URL is not defined");
+      return { success: false, error: t("api.error.unexpected") };
+    }
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
