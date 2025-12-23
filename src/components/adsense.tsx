@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, FC, useRef } from 'react';
+import { useEffect, useState, FC, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
