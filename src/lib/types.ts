@@ -6,6 +6,7 @@ export interface VideoData {
   wmplay?: string; // Video URL (with watermark)
   hdplay?: string; // HD Video URL (no watermark)
   music?: string; // MP3 URL
+  images?: string[]; // Slide images URL
 }
 
 export interface TikTokAPIResponse {

@@ -11,7 +11,7 @@ import { useLanguage } from '@/hooks/use-language';
 interface DownloadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  downloadInfo: { url: string; type: 'MP4' | 'MP3' } | null;
+  downloadInfo: { url: string; type: string } | null;
   onDownloadSuccess: () => void;
 }
 
