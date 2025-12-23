@@ -48,12 +48,25 @@ const AdSense: FC<AdSenseProps> = ({
   }
 
   return (
-    <div className={cn("relative flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed overflow-hidden min-h-[100px]", className)} key={pathname + adSlot}>
-      <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold tracking-widest text-muted-foreground/30 pointer-events-none select-none uppercase">
-        Advertisement
-      </span>
+    <div className={cn("relative flex justify-center items-center overflow-hidden min-h-[100px] rounded-lg", className)} key={pathname + adSlot}>
+      {/* Internal Ad / Fallback */}
+      <a
+        href="/pricing"
+        target="_blank"
+        className="absolute inset-0 z-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-between px-6 hover:opacity-95 transition-opacity"
+      >
+        <div className="flex flex-col text-white">
+          <span className="font-bold text-lg">Upgrade to Pro</span>
+          <span className="text-xs text-white/80">Ad-free, Unlimited History & High Speed</span>
+        </div>
+        <div className="bg-white text-purple-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-sm whitespace-nowrap">
+          Get Started
+        </div>
+      </a>
+
+      {/* External AdSense */}
       <ins
-        className="adsbygoogle relative z-10"
+        className="adsbygoogle relative z-10 w-full h-full"
         style={{ display: 'block' }}
         data-ad-client="ca-pub-6698556269439251"
         data-ad-slot={adSlot}
