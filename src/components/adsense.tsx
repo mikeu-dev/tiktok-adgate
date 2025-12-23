@@ -48,9 +48,12 @@ const AdSense: FC<AdSenseProps> = ({
   }
 
   return (
-    <div className={cn("flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed overflow-hidden", className)} key={pathname + adSlot}>
+    <div className={cn("relative flex justify-center items-center text-muted-foreground text-sm bg-muted/50 rounded-lg border border-dashed overflow-hidden min-h-[100px]", className)} key={pathname + adSlot}>
+      <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold tracking-widest text-muted-foreground/30 pointer-events-none select-none uppercase">
+        Advertisement
+      </span>
       <ins
-        className="adsbygoogle"
+        className="adsbygoogle relative z-10"
         style={{ display: 'block' }}
         data-ad-client="ca-pub-6698556269439251"
         data-ad-slot={adSlot}
