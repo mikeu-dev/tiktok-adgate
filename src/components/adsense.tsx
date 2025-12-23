@@ -71,7 +71,7 @@ const AdSense: FC<AdSenseProps> = ({
 
       {/* External AdSense */}
       <ins
-        className="adsbygoogle relative z-10 w-full h-full"
+        className="adsbygoogle relative z-10 w-full h-full pointer-events-none"
         style={{ display: 'block' }}
         data-ad-client="ca-pub-6698556269439251"
         data-ad-slot={adSlot}
