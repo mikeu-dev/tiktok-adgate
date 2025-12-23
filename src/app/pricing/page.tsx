@@ -9,9 +9,44 @@ import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+import { useState } from 'react';
+import { useAuth } from '@/components/auth-provider';
+import { createCheckoutSession } from '@/lib/payments';
+import { useRouter } from 'next/navigation';
+
 export default function PricingPage() {
+    const { user, signInWithGoogle } = useAuth();
+    const router = useRouter();
+    const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+    const handleSubscribe = async (planId: string) => {
+        if (!user) {
+            await signInWithGoogle();
+            return;
+        }
+
+        if (planId === 'free') {
+            router.push('/');
+            return;
+        }
+
+        try {
+            setLoadingPlan(planId);
+            const session = await createCheckoutSession(planId, user.uid, user.email);
+            if (session.url) {
+                window.location.href = session.url;
+            }
+        } catch (error) {
+            console.error('Subscription error:', error);
+            alert('Failed to start checkout. Please try again.');
+        } finally {
+            setLoadingPlan(null);
+        }
+    };
+
     const plans = [
         {
+            id: 'free',
             name: 'Free',
             price: '$0',
             description: 'Essential for casual downloading',
@@ -27,6 +62,7 @@ export default function PricingPage() {
             popular: false
         },
         {
+            id: 'pro',
             name: 'Pro',
             price: '$9.99',
             period: '/month',
@@ -142,8 +178,10 @@ export default function PricingPage() {
                                             }`}
                                         variant={plan.buttonVariant}
                                         size="lg"
+                                        onClick={() => handleSubscribe(plan.id)}
+                                        disabled={loadingPlan === plan.id}
                                     >
-                                        {plan.buttonText}
+                                        {loadingPlan === plan.id ? 'Loading...' : plan.buttonText}
                                     </Button>
                                 </CardFooter>
                             </Card>

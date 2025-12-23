@@ -12,16 +12,31 @@ export const plans = [
     }
 ];
 
-export async function createCheckoutSession(planId: string) {
-    // Placeholder for Stripe/LemonSqueezy integration
-    console.log(`Creating checkout session for plan: ${planId}`);
+export async function createCheckoutSession(planId: string, userId: string, userEmail?: string | null) {
+    try {
+        const response = await fetch('/api/payments/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_ID_PRO || '393630', // Default or from env
+                userId,
+                userEmail
+            }),
+        });
 
-    // Simulate API call
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({ url: 'https://checkout.stripe.com/test-session' });
-        }, 1000);
-    });
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Checkout error:', error);
+        throw error;
+    }
 }
 
 export async function getSubscriptionStatus(userId: string) {
