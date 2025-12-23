@@ -17,14 +17,14 @@ type AdSenseProps = {
   fullWidthResponsive?: boolean;
 };
 
-const AdSense: FC<AdSenseProps> = ({ 
-  className, 
-  adSlot, 
-  adFormat = 'auto', 
-  fullWidthResponsive = true 
+const AdSense: FC<AdSenseProps> = ({
+  className,
+  adSlot,
+  adFormat = 'auto',
+  fullWidthResponsive = true
 }) => {
   const pathname = usePathname();
-  
+
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -42,9 +42,10 @@ const AdSense: FC<AdSenseProps> = ({
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive={fullWidthResponsive.toString()}
+        suppressHydrationWarning
       ></ins>
-       {/* In a real scenario, the Ad will be displayed here. This is a placeholder. */}
-       <span className="p-4">Advertisement Area</span>
+      {/* In a real scenario, the Ad will be displayed here. This is a placeholder. */}
+      <span className="p-4">Advertisement Area</span>
     </div>
   );
 };
