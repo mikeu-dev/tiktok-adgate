@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from '@/lib/utils';
 import { LanguageProvider } from '@/components/providers/language-provider';
+import { AuthProvider } from '@/components/auth-provider';
 
 const siteConfig = {
   name: 'TikTok AdGate Downloader',
@@ -102,17 +103,19 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased min-h-screen flex flex-col", inter.variable, sourceCodePro.variable, outfit.variable)}>
         <LanguageProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="flex-grow">
-              {children}
-            </div>
-            <Toaster />
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="flex-grow">
+                {children}
+              </div>
+              <Toaster />
+            </ThemeProvider>
+          </AuthProvider>
         </LanguageProvider>
       </body>
     </html>

@@ -17,12 +17,16 @@ import { Terminal } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 import { motion } from 'framer-motion';
 
+import { saveDownload } from '@/lib/db/downloads';
+import { useAuth } from '@/components/auth-provider';
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [downloadCount, setDownloadCount] = useLocalStorage('downloadCount', 0);
   const { t, language } = useLanguage();
+  const { user } = useAuth();
 
   const handleFetchVideo = async (url: string) => {
     setIsLoading(true);
@@ -33,6 +37,10 @@ export default function Home() {
 
     if (result.success && result.data) {
       setVideoData(result.data);
+      if (user) {
+        // Save to history asynchronously
+        saveDownload(user.uid, result.data).catch(console.error);
+      }
     } else {
       setError(result.error || t('error.unknown'));
     }
