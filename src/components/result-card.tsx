@@ -58,7 +58,7 @@ export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
       transition={{ duration: 0.5, type: "spring" }}
       className="perspective-1000"
     >
-      <Card className="overflow-hidden shadow-2xl border-white/20 glass backdrop-blur-xl bg-white/40 dark:bg-black/40">
+      <Card className="overflow-hidden shadow-2xl glass bg-white/40 dark:bg-card/40">
         <CardHeader>
           <CardTitle className="leading-tight text-xl md:text-3xl font-headline bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent">
             {videoData.title}
@@ -75,7 +75,7 @@ export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Main Video/Cover View */}
-          <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 shadow-inner cursor-pointer group bg-black/5 dark:bg-black/50" onClick={() => videoUrl && handleDownloadClick(videoUrl, 'MP4')}>
+          <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 shadow-inner cursor-pointer group bg-muted/20" onClick={() => videoUrl && handleDownloadClick(videoUrl, 'MP4')}>
             <Image
               src={videoData.cover}
               alt={t('result.thumbnailAlt', { title: videoData.title })}
@@ -126,7 +126,7 @@ export const ResultCard: FC<ResultCardProps> = ({ videoData, onDownload }) => {
                       <CarouselItem key={idx} className="pl-2 md:pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/4">
                         <motion.div
                           whileHover={{ y: -5 }}
-                          className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/10 bg-muted/50 group cursor-pointer shadow-sm hover:shadow-lg transition-all"
+                          className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/10 bg-muted/30 group cursor-pointer shadow-sm hover:shadow-lg transition-all"
                           onClick={() => handleDownloadClick(img, 'JPG')}
                         >
                           <Image

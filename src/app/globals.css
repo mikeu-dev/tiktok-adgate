@@ -75,30 +75,39 @@
 }
 
 .dark {
-  --background: 210 10% 20%;
-  --foreground: 210 40% 98%;
-  --card: 210 10% 23%;
+  --background: 222 47% 11%;
+  --foreground: 0 0% 100%;
+  --card: 222 47% 13%;
   --card-foreground: 210 40% 98%;
-  --popover: 210 10% 20%;
+  --popover: 222 47% 11%;
   --popover-foreground: 210 40% 98%;
-  --primary: 210 70% 50%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 217.2 32.6% 17.5%;
+  --primary: 210 100% 65%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217 32% 17%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
+  --muted: 217 32% 17%;
+  --muted-foreground: 215 20% 75%;
   --accent: 180 60% 60%;
   --accent-foreground: 180 100% 15%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 27.5%;
-  --input: 217.2 32.6% 27.5%;
-  --ring: 210 70% 50%;
+  --border: 217 32% 20%;
+  --input: 217 32% 20%;
+  --ring: 212 96% 78%;
 }
 
 @layer base {
   * {
     @apply border-border;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-outfit), sans-serif;
   }
 
   body {
@@ -117,6 +126,6 @@
   }
 
   .dark .glass {
-    @apply bg-black/20 border-white/10;
+    @apply bg-black/40 border-white/5;
   }
 }
