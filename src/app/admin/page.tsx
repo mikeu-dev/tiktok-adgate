@@ -30,10 +30,13 @@ export default function AdminPage() {
             } else {
                 // In a real app, you'd check a claim or DB role. 
                 // For now, we'll just allow it for demo purposes or check a hardcoded email
-                // setIsAdmin(true); 
-                // For security in a real implementation:
-                // if (user.email === 'admin@example.com') setIsAdmin(true) else router.push('/')
-                setIsAdmin(true); // Developing: Allow access
+                // Check for specific admin email from env
+                const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+                if (user.email === adminEmail) {
+                    setIsAdmin(true);
+                } else {
+                    router.push('/');
+                }
             }
         }
     }, [user, loading, router]);
