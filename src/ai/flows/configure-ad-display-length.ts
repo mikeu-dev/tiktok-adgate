@@ -8,14 +8,15 @@
  * - ConfigureAdDisplayLengthOutput - The return type for the configureAdDisplayLength function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+import { updateAdDuration } from '@/lib/config-store';
 
 const ConfigureAdDisplayLengthInputSchema = z.object({
   duration: z
     .number()
-    .min(10)
-    .max(15)
+    .min(5)
+    .max(60)
     .describe('The duration of the advertisement in seconds.'),
 });
 export type ConfigureAdDisplayLengthInput = z.infer<
@@ -38,11 +39,11 @@ export async function configureAdDisplayLength(
 
 const configureAdDisplayLengthPrompt = ai.definePrompt({
   name: 'configureAdDisplayLengthPrompt',
-  input: {schema: ConfigureAdDisplayLengthInputSchema},
-  output: {schema: ConfigureAdDisplayLengthOutputSchema},
+  input: { schema: ConfigureAdDisplayLengthInputSchema },
+  output: { schema: ConfigureAdDisplayLengthOutputSchema },
   prompt: `You are an admin configuring the ad display length.
 
-The requested ad display duration is {{{duration}}} seconds.
+The requested ad display duration is {{duration}} seconds.
 
 Return a success message and indicate that the configuration was successful.`,
 });
@@ -54,7 +55,15 @@ const configureAdDisplayLengthFlow = ai.defineFlow(
     outputSchema: ConfigureAdDisplayLengthOutputSchema,
   },
   async input => {
-    const {output} = await configureAdDisplayLengthPrompt(input);
-    return output!;
+    try {
+      await updateAdDuration(input.duration);
+      const { output } = await configureAdDisplayLengthPrompt(input);
+      return output!;
+    } catch (e) {
+      return {
+        success: false,
+        message: 'Failed to update configuration.'
+      }
+    }
   }
 );

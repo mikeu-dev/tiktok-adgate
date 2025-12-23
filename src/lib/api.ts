@@ -4,6 +4,9 @@ import type { TikTokAPIResponse, VideoData } from './types';
 import type { Language } from '@/hooks/use-language';
 import id from '@/locales/id.json';
 import en from '@/locales/en.json';
+import { getAdConfiguration } from './config-store';
+
+export { getAdConfiguration };
 
 const translations = { id, en };
 
@@ -15,7 +18,7 @@ interface ActionResult {
 
 export async function getVideoInfo(url: string, lang: Language = 'id'): Promise<ActionResult> {
   const t = (key: keyof typeof id) => translations[lang][key] || translations['id'][key];
-  
+
   // Basic validation
   if (!url || !url.includes('tiktok.com')) {
     return { success: false, error: t("api.error.invalidUrl") };
@@ -31,9 +34,9 @@ export async function getVideoInfo(url: string, lang: Language = 'id'): Promise<
       body: new URLSearchParams({ url }),
       cache: 'no-store'
     });
-    
+
     if (!response.ok) {
-        return { success: false, error: `${t("api.error.requestFailed")} ${response.status}` };
+      return { success: false, error: `${t("api.error.requestFailed")} ${response.status}` };
     }
 
     const result: TikTokAPIResponse = await response.json();
